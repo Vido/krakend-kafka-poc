@@ -1,0 +1,28 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "name": "KrakenD - API Gateway",
+  "timeout": "30s",
+  "cache_ttl": "300s",
+  "endpoints": [
+    {
+      "endpoint": "/v1/data",
+      "method": "POST",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "host": ["kafka://"],
+          "disable_host_sanitize": true,
+          "extra_config": {
+            "backend/pubsub/publisher": {
+              "topic_url": "my_favorite_topic"
+            }
+          }
+        }
+      ],
+      "input_headers": [
+        "Host"
+      ]
+    }
+  ]
+}
