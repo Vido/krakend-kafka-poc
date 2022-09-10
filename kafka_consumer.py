@@ -8,7 +8,7 @@
 from kafka import KafkaConsumer
 
 consumer = KafkaConsumer(
-        'my_favorite_topic', bootstrap_servers=['localhost:9093'])
+        'my-favorite-topic', bootstrap_servers=['localhost:9093'])
 
 print("Consuming messages")
 for msg in consumer:

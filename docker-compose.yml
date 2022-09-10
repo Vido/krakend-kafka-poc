@@ -29,6 +29,13 @@ services:
     depends_on:
       - zookeeper
 
+  init-topics:
+    image: 'bitnami/kafka:latest'
+    command: ['/opt/bitnami/kafka/bin/kafka-topics.sh', '--create', '--if-not-exists', '--bootstrap-server', 'kafka:9092', '--replication-factor', '1', '--partitions', '1', '--topic', 'my-favorite-topic']
+    depends_on:
+      kafka:
+        condition: service_started
+
   krakend:
     image: devopsfaith/krakend:2.0.6
     volumes:
@@ -37,8 +44,9 @@ services:
     ports:
       - "8080:8080"
     depends_on:
+      init-topics:
+        condition: service_completed_successfully
       kafka:
         condition: service_healthy
-
     environment:
       - KAFKA_BROKERS=kafka:9092
